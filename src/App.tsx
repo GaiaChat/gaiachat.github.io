@@ -342,7 +342,7 @@ function AdSenseDownloadPlacement() {
           style={{ display: 'block' }}
           data-ad-client={client}
           data-ad-slot={slot}
-          data-ad-format="auto"
+          data-ad-format="horizontal"
           data-full-width-responsive="true"
         />
       </aside>

@@ -508,6 +508,12 @@ main {
   text-transform: uppercase;
 }
 
+.ad-download-placement .adsbygoogle {
+  width: 100%;
+  min-width: 250px;
+  min-height: 90px;
+}
+
 .ad-download-placement-preview {
   place-items: center;
   border-color: rgba(110, 255, 191, 0.24);
