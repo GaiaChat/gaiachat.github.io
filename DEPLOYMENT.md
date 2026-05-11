@@ -38,6 +38,15 @@ Optional repository variables for the workflow:
 `VITE_ADSENSE_CLIENT` should look like `ca-pub-...`. `VITE_ADSENSE_DOWNLOAD_SLOT`
 is a separate numeric `data-ad-slot` value from the display ad unit code.
 
+The site also publishes `ads.txt` at the domain root:
+
+```text
+google.com, pub-1998367148417325, DIRECT, f08c47fec0942fa0
+```
+
+If the AdSense account changes, update `public/ads.txt` and run `pnpm build` so
+both `dist/ads.txt` and the legacy root `ads.txt` are refreshed.
+
 If AdSense only gives you this code, it is the site-level or Auto Ads script:
 
 ```html
