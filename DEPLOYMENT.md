@@ -44,6 +44,7 @@ If AdSense only gives you this code, it is the site-level or Auto Ads script:
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1998367148417325" crossorigin="anonymous"></script>
 ```
 
-That script is enough for site verification and Auto Ads, but it does not fill a
-specific fixed banner. The fixed download-page banner needs a display ad unit
-with an `<ins class="adsbygoogle" ... data-ad-slot="...">` snippet.
+That script is installed in `index.html` for site verification and Auto Ads, but
+it does not fill a specific fixed banner. The fixed download-page banner needs a
+display ad unit with an `<ins class="adsbygoogle" ... data-ad-slot="...">`
+snippet.
