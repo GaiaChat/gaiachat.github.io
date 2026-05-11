@@ -14,6 +14,10 @@ TypeScript or JSX.
 3. Set `Build and deployment -> Source` to `GitHub Actions`.
 4. Push to `main`, or run the `Deploy GitHub Pages` workflow manually.
 
+That Pages source setting requires admin access to the repository. A user with
+only write access can push the workflow, but GitHub Pages will keep serving the
+root `index.html` until an admin switches the source to `GitHub Actions`.
+
 Optional repository variables for the workflow:
 
 - `VITE_ADSENSE_CLIENT`
