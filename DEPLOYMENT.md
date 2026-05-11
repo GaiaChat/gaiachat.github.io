@@ -29,3 +29,6 @@ Optional repository variables for the workflow:
 - `VITE_CURRENT_SERVER_WINDOWS_URL`
 - `VITE_CURRENT_SERVER_MAC_URL`
 - `VITE_CURRENT_SERVER_LINUX_URL`
+
+`VITE_ADSENSE_CLIENT` should look like `ca-pub-...`. `VITE_ADSENSE_DOWNLOAD_SLOT`
+is a separate numeric `data-ad-slot` value from the display ad unit code.

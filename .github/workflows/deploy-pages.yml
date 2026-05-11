@@ -36,17 +36,48 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
+      - name: Apply optional Vite env from repository variables
+        shell: bash
         env:
-          VITE_ADSENSE_CLIENT: ${{ vars.VITE_ADSENSE_CLIENT }}
-          VITE_ADSENSE_DOWNLOAD_SLOT: ${{ vars.VITE_ADSENSE_DOWNLOAD_SLOT }}
-          VITE_SOURCE_URL: ${{ vars.VITE_SOURCE_URL }}
-          VITE_GAIA_WINDOWS_URL: ${{ vars.VITE_GAIA_WINDOWS_URL }}
-          VITE_GAIA_MAC_URL: ${{ vars.VITE_GAIA_MAC_URL }}
-          VITE_GAIA_LINUX_URL: ${{ vars.VITE_GAIA_LINUX_URL }}
-          VITE_CURRENT_SERVER_WINDOWS_URL: ${{ vars.VITE_CURRENT_SERVER_WINDOWS_URL }}
-          VITE_CURRENT_SERVER_MAC_URL: ${{ vars.VITE_CURRENT_SERVER_MAC_URL }}
-          VITE_CURRENT_SERVER_LINUX_URL: ${{ vars.VITE_CURRENT_SERVER_LINUX_URL }}
+          PAGES_VITE_ADSENSE_CLIENT: ${{ vars.VITE_ADSENSE_CLIENT }}
+          PAGES_VITE_ADSENSE_DOWNLOAD_SLOT: ${{ vars.VITE_ADSENSE_DOWNLOAD_SLOT }}
+          PAGES_VITE_SOURCE_URL: ${{ vars.VITE_SOURCE_URL }}
+          PAGES_VITE_GAIA_WINDOWS_URL: ${{ vars.VITE_GAIA_WINDOWS_URL }}
+          PAGES_VITE_GAIA_MAC_URL: ${{ vars.VITE_GAIA_MAC_URL }}
+          PAGES_VITE_GAIA_LINUX_URL: ${{ vars.VITE_GAIA_LINUX_URL }}
+          PAGES_VITE_CURRENT_SERVER_WINDOWS_URL: ${{ vars.VITE_CURRENT_SERVER_WINDOWS_URL }}
+          PAGES_VITE_CURRENT_SERVER_MAC_URL: ${{ vars.VITE_CURRENT_SERVER_MAC_URL }}
+          PAGES_VITE_CURRENT_SERVER_LINUX_URL: ${{ vars.VITE_CURRENT_SERVER_LINUX_URL }}
+        run: |
+          rm -f .env.production.local
+
+          append_env() {
+            key="$1"
+            value="$2"
+
+            if [ -n "$value" ]; then
+              printf '%s=%s\n' "$key" "$value" >> .env.production.local
+            fi
+          }
+
+          append_env VITE_ADSENSE_CLIENT "$PAGES_VITE_ADSENSE_CLIENT"
+          append_env VITE_ADSENSE_DOWNLOAD_SLOT "$PAGES_VITE_ADSENSE_DOWNLOAD_SLOT"
+          append_env VITE_SOURCE_URL "$PAGES_VITE_SOURCE_URL"
+          append_env VITE_GAIA_WINDOWS_URL "$PAGES_VITE_GAIA_WINDOWS_URL"
+          append_env VITE_GAIA_MAC_URL "$PAGES_VITE_GAIA_MAC_URL"
+          append_env VITE_GAIA_LINUX_URL "$PAGES_VITE_GAIA_LINUX_URL"
+          append_env VITE_CURRENT_SERVER_WINDOWS_URL "$PAGES_VITE_CURRENT_SERVER_WINDOWS_URL"
+          append_env VITE_CURRENT_SERVER_MAC_URL "$PAGES_VITE_CURRENT_SERVER_MAC_URL"
+          append_env VITE_CURRENT_SERVER_LINUX_URL "$PAGES_VITE_CURRENT_SERVER_LINUX_URL"
+
+          if [ -s .env.production.local ]; then
+            sed 's/=.*/=<set>/' .env.production.local
+          else
+            rm -f .env.production.local
+            echo "No repository variables were set; using committed .env.production defaults."
+          fi
+
+      - name: Build
         run: pnpm build
 
       - name: Configure Pages

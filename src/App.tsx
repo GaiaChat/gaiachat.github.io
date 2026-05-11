@@ -279,7 +279,7 @@ function App() {
 }
 
 function AdSenseDownloadPlacement() {
-  const client = import.meta.env.VITE_ADSENSE_CLIENT?.trim();
+  const client = (import.meta.env.VITE_ADSENSE_CLIENT || 'ca-pub-1998367148417325').trim();
   const slot = import.meta.env.VITE_ADSENSE_DOWNLOAD_SLOT?.trim();
   const enabled = Boolean(client && slot);
   const pushedRef = useRef(false);
@@ -310,23 +310,23 @@ function AdSenseDownloadPlacement() {
     });
   }, [client, enabled]);
 
-  if (!enabled && import.meta.env.MODE === 'development') {
+  if (!enabled) {
     return (
       <div className="ad-placement-wrap">
         <div className="ad-placement-note">
           <span>Sponsored Slot</span>
-          <small>Dev preview. Set AdSense env vars to render the live unit.</small>
+          <small>
+            {slot
+              ? 'AdSense client is missing. Set VITE_ADSENSE_CLIENT.'
+              : 'AdSense slot is missing. Set VITE_ADSENSE_DOWNLOAD_SLOT to the numeric data-ad-slot.'}
+          </small>
         </div>
         <aside className="ad-download-placement ad-download-placement-preview" aria-label="Advertisement">
           <span>Advertisement</span>
-          <div>AdSense download-page slot</div>
+          <div>Download-page ad slot waiting for AdSense ID</div>
         </aside>
       </div>
     );
-  }
-
-  if (!enabled) {
-    return null;
   }
 
   return (
