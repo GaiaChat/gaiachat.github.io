@@ -282,16 +282,16 @@ function AdSenseDownloadPlacement() {
   const client = (import.meta.env.VITE_ADSENSE_CLIENT || 'ca-pub-1998367148417325').trim();
   const slot = import.meta.env.VITE_ADSENSE_DOWNLOAD_SLOT?.trim();
   const enabled = Boolean(client && slot);
-  const pushedRef = useRef(false);
+  const initializedRef = useRef(false);
 
   useEffect(() => {
-    if (!enabled || !client) {
+    if (!client) {
       return;
     }
-    if (pushedRef.current) {
+    if (initializedRef.current) {
       return;
     }
-    pushedRef.current = true;
+    initializedRef.current = true;
 
     const existingScript = document.getElementById('gaia-adsense-script');
     if (!existingScript) {
@@ -303,12 +303,16 @@ function AdSenseDownloadPlacement() {
       document.head.appendChild(script);
     }
 
+    if (!slot) {
+      return;
+    }
+
     window.requestAnimationFrame(() => {
       const adsWindow = window as WindowWithAds;
       adsWindow.adsbygoogle = adsWindow.adsbygoogle || [];
       adsWindow.adsbygoogle.push({});
     });
-  }, [client, enabled]);
+  }, [client, slot]);
 
   if (!enabled) {
     return (
@@ -316,14 +320,14 @@ function AdSenseDownloadPlacement() {
         <div className="ad-placement-note">
           <span>Sponsored Slot</span>
           <small>
-            {slot
-              ? 'AdSense client is missing. Set VITE_ADSENSE_CLIENT.'
-              : 'AdSense slot is missing. Set VITE_ADSENSE_DOWNLOAD_SLOT to the numeric data-ad-slot.'}
+            {client
+              ? 'AdSense site script is installed. Add a numeric display ad slot to fill this fixed placement.'
+              : 'AdSense client is missing. Set VITE_ADSENSE_CLIENT.'}
           </small>
         </div>
         <aside className="ad-download-placement ad-download-placement-preview" aria-label="Advertisement">
           <span>Advertisement</span>
-          <div>Download-page ad slot waiting for AdSense ID</div>
+          <div>Download-page display slot waiting for ad unit ID</div>
         </aside>
       </div>
     );

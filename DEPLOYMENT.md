@@ -3,9 +3,10 @@
 This is a Vite app. GitHub Pages must serve the built `dist/` folder, not the
 repository root.
 
-If Pages serves the root `index.html`, the browser will try to load
-`/src/main.tsx` and fail with a MIME error because GitHub Pages does not compile
-TypeScript or JSX.
+The preferred deployment is GitHub Actions serving `dist/`, but the repository
+root is also safe for legacy GitHub Pages. The root `index.html` loads committed
+production assets from `assets/` on `gaiachat.github.io`, and only loads
+`/src/main.tsx` when running the Vite dev server on port `5173`.
 
 ## Setup
 
@@ -17,6 +18,10 @@ TypeScript or JSX.
 That Pages source setting requires admin access to the repository. A user with
 only write access can push the workflow, but GitHub Pages will keep serving the
 root `index.html` until an admin switches the source to `GitHub Actions`.
+
+Run `pnpm build` before committing site changes. The build refreshes both
+`dist/` for the Actions artifact and the root `assets/` files used by legacy
+Pages mode.
 
 Optional repository variables for the workflow:
 
@@ -32,3 +37,13 @@ Optional repository variables for the workflow:
 
 `VITE_ADSENSE_CLIENT` should look like `ca-pub-...`. `VITE_ADSENSE_DOWNLOAD_SLOT`
 is a separate numeric `data-ad-slot` value from the display ad unit code.
+
+If AdSense only gives you this code, it is the site-level or Auto Ads script:
+
+```html
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1998367148417325" crossorigin="anonymous"></script>
+```
+
+That script is enough for site verification and Auto Ads, but it does not fill a
+specific fixed banner. The fixed download-page banner needs a display ad unit
+with an `<ins class="adsbygoogle" ... data-ad-slot="...">` snippet.
