@@ -5,14 +5,18 @@ import {
   Blocks,
   Download,
   Github,
-  Globe2,
   HardDriveDownload,
   Laptop,
+  MessageSquareText,
   MonitorDown,
+  Network,
+  PanelsTopLeft,
   Server,
   Shield,
+  ShieldCheck,
   Sparkles,
   TerminalSquare,
+  UsersRound,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import globeImage from './assets/globe.webp';
@@ -106,6 +110,39 @@ const featureItems = [
   },
 ];
 
+const featureDetails = [
+  {
+    icon: PanelsTopLeft,
+    title: 'One launcher for every server',
+    body: 'Gaia keeps hosted and self-hosted Current servers in one focused desktop entry point.',
+  },
+  {
+    icon: MessageSquareText,
+    title: 'Chat and voice included',
+    body: 'Current Server packages the community basics without sending people to a rented chat platform.',
+  },
+  {
+    icon: Network,
+    title: 'LAN or public hosting',
+    body: 'Run a private local server, publish a community server, or keep both modes available.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Auth stays separate',
+    body: 'Bluesky sign-in and browser handoff stay outside the public download site and app surfaces.',
+  },
+  {
+    icon: UsersRound,
+    title: 'Community-ready foundation',
+    body: 'Bring together moderation, membership, voice, and messaging in a server you control.',
+  },
+  {
+    icon: Github,
+    title: 'Open source by default',
+    body: 'Review the launcher and server code, fork the site, or wire your own release downloads.',
+  },
+];
+
 function App() {
   return (
     <div className="site-shell">
@@ -121,7 +158,7 @@ function App() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="#downloads">Downloads</a>
-          <a href="#server">Server</a>
+          <a href="#features">Features</a>
           <a href={sourceUrl}>Source</a>
         </nav>
       </header>
@@ -146,7 +183,7 @@ function App() {
                 <Download aria-hidden="true" />
                 <span>Download</span>
               </a>
-              <a className="secondary-action" href="#server">
+              <a className="secondary-action" href="#features">
                 <Server aria-hidden="true" />
                 <span>Host a Server</span>
               </a>
@@ -229,37 +266,37 @@ function App() {
           })}
         </section>
 
-        <section className="server-section" id="server" aria-labelledby="server-title">
-          <div className="server-copy">
-            <Globe2 aria-hidden="true" />
-            <h2 id="server-title">A Public Site For Funding, Not A Private App Surface</h2>
+        <section className="features-section" id="features" aria-labelledby="features-title">
+          <div className="features-copy">
+            <Sparkles aria-hidden="true" />
+            <span className="feature-kicker">Features</span>
+            <h2 id="features-title">Built For People Running Their Own Place</h2>
             <p>
-              This is the right place for a top AdSense unit because visitors are reading public
-              release and download content. The chat app, launcher auth, and post-login pages stay clean.
+              Gaia Launcher and Current Server are designed around ownership: your server, your
+              release channel, and a desktop flow that keeps setup clear.
             </p>
           </div>
-          <div className="server-console" aria-label="Current Server launch notes">
-            <div className="console-row">
-              <TerminalSquare aria-hidden="true" />
-              <span>current-server</span>
-              <small>ready</small>
-            </div>
-            <div className="console-lines">
-              <p>one launch path</p>
-              <p>Bluesky OAuth handoff</p>
-              <p>LAN and public hosting modes</p>
-              <p>voice and messaging included</p>
-            </div>
+          <div className="feature-detail-grid">
+            {featureDetails.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <article className="feature-detail-card" key={feature.title}>
+                  <Icon aria-hidden="true" />
+                  <h3>{feature.title}</h3>
+                  <p>{feature.body}</p>
+                </article>
+              );
+            })}
           </div>
         </section>
 
         <section className="source-section" id="source">
           <div>
             <Sparkles aria-hidden="true" />
-            <h2>Open Source, Deployment Specific Ads</h2>
+            <h2>Open Source, Self-host Friendly</h2>
             <p>
-              AdSense client and slot IDs are read from environment variables, so the public template
-              can stay clean while your hosted deployment can opt in.
+              Gaia is built in public so server owners can inspect, fork, and adapt the pieces they
+              need for their own communities.
             </p>
           </div>
           <a className="source-link" href={sourceUrl}>
