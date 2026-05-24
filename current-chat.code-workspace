@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../current-chat"
+		},
+		{
+			"path": "../Gaia-Launcher"
+		},
+		{
+			"path": "../Gaia-Website"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
