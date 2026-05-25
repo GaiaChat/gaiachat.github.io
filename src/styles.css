@@ -266,6 +266,41 @@ main {
   margin-top: 30px;
 }
 
+.usage-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-top: 18px;
+  border: 1px solid rgba(110, 255, 191, 0.22);
+  border-radius: 999px;
+  padding: 7px 12px;
+  background:
+    linear-gradient(135deg, rgba(var(--mint-rgb), 0.12), rgba(var(--brand-rgb), 0.08)),
+    rgba(235, 247, 255, 0.055);
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.usage-pulse > span {
+  width: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 18px rgba(var(--mint-rgb), 0.62);
+}
+
+.usage-pulse strong {
+  color: var(--ink);
+}
+
+.usage-pulse small {
+  color: var(--ink-soft);
+  font-size: inherit;
+  font-weight: inherit;
+}
+
 .primary-action,
 .secondary-action,
 .source-link {

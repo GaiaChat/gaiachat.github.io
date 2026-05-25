@@ -31,6 +31,7 @@ Optional repository variables for the workflow:
 - `VITE_GAIA_WINDOWS_URL`
 - `VITE_GAIA_MAC_URL`
 - `VITE_GAIA_LINUX_URL`
+- `VITE_GAIA_USAGE_COUNT_URL`
 - `VITE_CURRENT_SERVER_WINDOWS_URL`
 - `VITE_CURRENT_SERVER_MAC_URL`
 - `VITE_CURRENT_SERVER_LINUX_URL`
@@ -46,6 +47,15 @@ google.com, pub-1998367148417325, DIRECT, f08c47fec0942fa0
 
 If the AdSense account changes, update `public/ads.txt` and run `pnpm build` so
 both `dist/ads.txt` and the legacy root `ads.txt` are refreshed.
+
+## Live Usage Count
+
+The launcher sends an anonymous heartbeat to `/api/usage/ping` by default.
+Static GitHub Pages cannot receive that POST, so the included
+`functions/api/usage/[[path]].ts` endpoint is for Cloudflare Pages or another
+host with function support. Bind a KV namespace named `GAIA_USAGE_KV`, then point
+`VITE_GAIA_USAGE_COUNT_URL` at `/api/usage` and launcher `GAIA_USAGE_PING_URL`
+at the deployed `/api/usage/ping` URL.
 
 If AdSense only gives you this code, it is the site-level or Auto Ads script:
 

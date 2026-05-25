@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   BadgeCheck,
@@ -40,6 +40,7 @@ type DownloadGroup = {
 };
 
 const sourceUrl = import.meta.env.VITE_SOURCE_URL || '#source';
+const usageCountUrl = import.meta.env.VITE_GAIA_USAGE_COUNT_URL || '/api/usage';
 
 const downloadGroups: DownloadGroup[] = [
   {
@@ -188,6 +189,7 @@ function App() {
                 <span>Host a Server</span>
               </a>
             </div>
+            <UsagePulse />
           </div>
           <div className="launcher-preview" aria-hidden="true">
             <div className="preview-window">
@@ -311,6 +313,55 @@ function App() {
         <span>Current Server</span>
         <span>Built for public downloads, not private chat monetization.</span>
       </footer>
+    </div>
+  );
+}
+
+function UsagePulse() {
+  const [activeUsers, setActiveUsers] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    let timer: number | undefined;
+
+    const refresh = async () => {
+      try {
+        const response = await fetch(usageCountUrl, { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error('Usage count unavailable.');
+        }
+        const payload = (await response.json()) as { activeUsers?: unknown };
+        const count =
+          typeof payload.activeUsers === 'number' && Number.isFinite(payload.activeUsers)
+            ? Math.max(0, Math.round(payload.activeUsers))
+            : null;
+        if (!cancelled) {
+          setActiveUsers(count);
+        }
+      } catch {
+        if (!cancelled) {
+          setActiveUsers(null);
+        }
+      }
+    };
+
+    void refresh();
+    timer = window.setInterval(() => void refresh(), 45_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, []);
+
+  if (activeUsers === null) {
+    return null;
+  }
+
+  return (
+    <div className="usage-pulse" aria-live="polite">
+      <span aria-hidden="true" />
+      <strong>{activeUsers.toLocaleString()}</strong>
+      <small>{activeUsers === 1 ? 'person using Gaia now' : 'people using Gaia now'}</small>
     </div>
   );
 }
