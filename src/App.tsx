@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ArrowRight,
   BadgeCheck,
@@ -8,7 +8,6 @@ import {
   HardDriveDownload,
   Laptop,
   MessageSquareText,
-  MonitorDown,
   Network,
   PanelsTopLeft,
   Server,
@@ -21,10 +20,6 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import globeImage from './assets/globe.webp';
 import brandLogo from './assets/logo_grayscale.svg';
-
-type WindowWithAds = Window & {
-  adsbygoogle?: unknown[];
-};
 
 type DownloadLink = {
   label: string;
@@ -39,8 +34,13 @@ type DownloadGroup = {
   links: DownloadLink[];
 };
 
-const sourceUrl = import.meta.env.VITE_SOURCE_URL || '#source';
-const usageCountUrl = import.meta.env.VITE_GAIA_USAGE_COUNT_URL || '/api/usage';
+const sourceUrl = import.meta.env.VITE_SOURCE_URL || 'https://github.com/GaiaChat/gaiachat.github.io';
+const gaiaReleaseUrl =
+  import.meta.env.VITE_GAIA_RELEASE_URL || 'https://github.com/GaiaChat/Gaia-Launcher/releases/latest';
+const currentReleaseUrl =
+  import.meta.env.VITE_CURRENT_RELEASE_URL || 'https://github.com/GaiaChat/current/releases/latest';
+const currentSourceUrl = import.meta.env.VITE_CURRENT_SOURCE_URL || 'https://github.com/GaiaChat/current';
+const usageCountUrl = import.meta.env.VITE_GAIA_USAGE_COUNT_URL?.trim() || '';
 
 const downloadGroups: DownloadGroup[] = [
   {
@@ -48,22 +48,24 @@ const downloadGroups: DownloadGroup[] = [
     description: 'Desktop entry point for joining hosted and self-hosted Current servers.',
     links: [
       {
-        label: 'Windows',
-        href: import.meta.env.VITE_GAIA_WINDOWS_URL || '/downloads/gaia-launcher-windows-x64.zip',
-        icon: MonitorDown,
-        note: 'x64 installer',
-      },
-      {
-        label: 'macOS',
-        href: import.meta.env.VITE_GAIA_MAC_URL || '/downloads/gaia-launcher-macos-universal.dmg',
+        label: 'Latest release',
+        href: gaiaReleaseUrl,
         icon: Laptop,
-        note: 'Universal build',
+        note: 'All available builds',
       },
       {
-        label: 'Linux',
-        href: import.meta.env.VITE_GAIA_LINUX_URL || '/downloads/gaia-launcher-linux-x64.AppImage',
+        label: 'Linux AppImage',
+        href:
+          import.meta.env.VITE_GAIA_LINUX_URL ||
+          'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.3.0-beta.4/GaiaLauncher-0.3.0-beta.4-x86_64.AppImage',
         icon: HardDriveDownload,
-        note: 'AppImage',
+        note: 'v0.3.0 beta 4',
+      },
+      {
+        label: 'Release notes',
+        href: gaiaReleaseUrl,
+        icon: Github,
+        note: 'GitHub releases',
       },
     ],
   },
@@ -72,22 +74,24 @@ const downloadGroups: DownloadGroup[] = [
     description: 'Run a personal or community server with chat, voice, moderation, and Bluesky sign-in.',
     links: [
       {
-        label: 'Windows',
-        href: import.meta.env.VITE_CURRENT_SERVER_WINDOWS_URL || '/downloads/current-server-windows-x64.zip',
-        icon: MonitorDown,
-        note: 'Server bundle',
-      },
-      {
-        label: 'macOS',
-        href: import.meta.env.VITE_CURRENT_SERVER_MAC_URL || '/downloads/current-server-macos-universal.zip',
+        label: 'Latest release',
+        href: currentReleaseUrl,
         icon: Laptop,
-        note: 'Server bundle',
+        note: 'Server packages',
       },
       {
-        label: 'Linux',
-        href: import.meta.env.VITE_CURRENT_SERVER_LINUX_URL || '/downloads/current-server-linux-x64.tar.gz',
+        label: 'Server tar.gz',
+        href:
+          import.meta.env.VITE_CURRENT_SERVER_LINUX_URL ||
+          'https://github.com/GaiaChat/current/releases/download/current-server-v0.3.5/current-server-v0.3.5.tar.gz',
         icon: TerminalSquare,
-        note: 'tar.gz bundle',
+        note: 'v0.3.5',
+      },
+      {
+        label: 'Source',
+        href: currentSourceUrl,
+        icon: Github,
+        note: 'Server repository',
       },
     ],
   },
@@ -144,6 +148,24 @@ const featureDetails = [
   },
 ];
 
+const guideTopics = [
+  {
+    icon: Server,
+    title: 'What runs on your machine',
+    body: 'Gaia Launcher is the desktop shell. Current Server is the hostable service that stores server configuration, channels, member roles, messages, voice state, moderation settings, and release metadata for the communities you run.',
+  },
+  {
+    icon: Network,
+    title: 'How people connect',
+    body: 'A server owner publishes a Current Server, then shares its address with members. Gaia Launcher keeps the server list, account handoff, and update path in one place so members do not need to manually juggle browser tabs and local scripts.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Why the public site is separate',
+    body: 'This website is only for public product information, release downloads, policy pages, and source links. Private chat content, login redirects, invite codes, and message surfaces stay inside the launcher and the server the owner controls.',
+  },
+];
+
 function App() {
   return (
     <div className="site-shell">
@@ -158,8 +180,9 @@ function App() {
           </span>
         </a>
         <nav aria-label="Primary navigation">
+          <a href="#about">About</a>
           <a href="#downloads">Downloads</a>
-          <a href="#features">Features</a>
+          <a href="#privacy">Privacy</a>
           <a href={sourceUrl}>Source</a>
         </nav>
       </header>
@@ -219,12 +242,55 @@ function App() {
           </div>
         </section>
 
+        <section className="about-section" id="about" aria-labelledby="about-title">
+          <div className="section-heading">
+            <Sparkles aria-hidden="true" />
+            <div>
+              <h2 id="about-title">Independent Chat Infrastructure</h2>
+              <p>
+                Gaia Launcher and Current Server are built for small communities that want a clear
+                desktop entry point and a server they can inspect, host, and move.
+              </p>
+            </div>
+          </div>
+          <div className="editorial-grid">
+            <article className="editorial-lede">
+              <h3>Own the place where your group talks.</h3>
+              <p>
+                Gaia Launcher is a companion app for Current Server. It keeps the everyday flow
+                simple: choose a server, sign in, join channels, use voice, and stay current with
+                launcher and server releases.
+              </p>
+              <p>
+                Current Server handles the community side: roles, channels, moderation, invites,
+                messages, and voice-room state. The project is open source so server owners can
+                review the code and choose the hosting setup that fits their group.
+              </p>
+            </article>
+            <div className="editorial-list">
+              {guideTopics.map((topic) => {
+                const Icon = topic.icon;
+                return (
+                  <article className="editorial-card" key={topic.title}>
+                    <Icon aria-hidden="true" />
+                    <h3>{topic.title}</h3>
+                    <p>{topic.body}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
         <section className="download-section" id="downloads" aria-labelledby="downloads-title">
           <div className="section-heading">
             <BadgeCheck aria-hidden="true" />
             <div>
               <h2 id="downloads-title">Download Builds</h2>
-              <p>Launcher and server packages can point at your hosted release files through Vite env vars.</p>
+              <p>
+                These links point to current public GitHub releases instead of placeholder files,
+                so the download path stays auditable and reachable.
+              </p>
             </div>
           </div>
           <div className="download-grid">
@@ -252,7 +318,6 @@ function App() {
               </article>
             ))}
           </div>
-          <AdSenseDownloadPlacement />
         </section>
 
         <section className="feature-band" aria-label="Gaia and Current highlights">
@@ -306,12 +371,35 @@ function App() {
             <span>View Source</span>
           </a>
         </section>
+
+        <section className="policy-section" id="privacy" aria-labelledby="privacy-title">
+          <div>
+            <ShieldCheck aria-hidden="true" />
+            <h2 id="privacy-title">Privacy And Site Notes</h2>
+            <p>
+              The public website is a static product and release page. It does not host private
+              chat content, does not ask for account credentials, and does not receive Current
+              Server messages. Downloads and source links leave this site for GitHub.
+            </p>
+            <p>
+              The launcher and server projects have their own runtime behavior once installed.
+              Server owners should review the source and configure hosting, access, backups, and
+              moderation for their own communities.
+            </p>
+          </div>
+          <div className="policy-links">
+            <a className="text-link" href="/privacy.html">Privacy Policy</a>
+            <a className="text-link" href="/terms.html">Terms</a>
+            <a className="text-link" href={sourceUrl}>Website Source</a>
+          </div>
+        </section>
       </main>
 
       <footer>
-        <span>Gaia Launcher</span>
-        <span>Current Server</span>
-        <span>Built for public downloads, not private chat monetization.</span>
+        <a href="#top">Gaia Launcher</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href={sourceUrl}>Source</a>
       </footer>
     </div>
   );
@@ -321,6 +409,10 @@ function UsagePulse() {
   const [activeUsers, setActiveUsers] = useState<number | null>(null);
 
   useEffect(() => {
+    if (!usageCountUrl) {
+      return;
+    }
+
     let cancelled = false;
     let timer: number | undefined;
 
@@ -362,78 +454,6 @@ function UsagePulse() {
       <span aria-hidden="true" />
       <strong>{activeUsers.toLocaleString()}</strong>
       <small>{activeUsers === 1 ? 'person using Gaia now' : 'people using Gaia now'}</small>
-    </div>
-  );
-}
-
-function AdSenseDownloadPlacement() {
-  const client = (import.meta.env.VITE_ADSENSE_CLIENT || 'ca-pub-1998367148417325').trim();
-  const slot = import.meta.env.VITE_ADSENSE_DOWNLOAD_SLOT?.trim();
-  const enabled = Boolean(client && slot);
-  const initializedRef = useRef(false);
-
-  useEffect(() => {
-    if (!client) {
-      return;
-    }
-    if (initializedRef.current) {
-      return;
-    }
-    initializedRef.current = true;
-
-    const existingScript = document.getElementById('gaia-adsense-script');
-    if (!existingScript) {
-      const script = document.createElement('script');
-      script.id = 'gaia-adsense-script';
-      script.async = true;
-      script.crossOrigin = 'anonymous';
-      script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(client)}`;
-      document.head.appendChild(script);
-    }
-
-    if (!slot) {
-      return;
-    }
-
-    window.requestAnimationFrame(() => {
-      const adsWindow = window as WindowWithAds;
-      adsWindow.adsbygoogle = adsWindow.adsbygoogle || [];
-      adsWindow.adsbygoogle.push({});
-    });
-  }, [client, slot]);
-
-  if (!enabled) {
-    return (
-      <div className="ad-placement-wrap">
-        <div className="ad-placement-note">
-          <span>Sponsored Slot</span>
-          <small>
-            {client
-              ? 'AdSense site script is installed. Add a numeric display ad slot to fill this fixed placement.'
-              : 'AdSense client is missing. Set VITE_ADSENSE_CLIENT.'}
-          </small>
-        </div>
-        <aside className="ad-download-placement ad-download-placement-preview" aria-label="Advertisement">
-          <span>Advertisement</span>
-          <div>Download-page display slot waiting for ad unit ID</div>
-        </aside>
-      </div>
-    );
-  }
-
-  return (
-    <div className="ad-placement-wrap">
-      <aside className="ad-download-placement" aria-label="Advertisement">
-        <span>Advertisement</span>
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block' }}
-          data-ad-client={client}
-          data-ad-slot={slot}
-          data-ad-format="horizontal"
-          data-full-width-responsive="true"
-        />
-      </aside>
     </div>
   );
 }

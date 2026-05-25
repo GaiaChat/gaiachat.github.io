@@ -26,18 +26,17 @@ Pages mode.
 Optional repository variables for the workflow:
 
 - `VITE_ADSENSE_CLIENT`
-- `VITE_ADSENSE_DOWNLOAD_SLOT`
 - `VITE_SOURCE_URL`
-- `VITE_GAIA_WINDOWS_URL`
-- `VITE_GAIA_MAC_URL`
+- `VITE_GAIA_RELEASE_URL`
 - `VITE_GAIA_LINUX_URL`
 - `VITE_GAIA_USAGE_COUNT_URL`
-- `VITE_CURRENT_SERVER_WINDOWS_URL`
-- `VITE_CURRENT_SERVER_MAC_URL`
+- `VITE_CURRENT_RELEASE_URL`
+- `VITE_CURRENT_SOURCE_URL`
 - `VITE_CURRENT_SERVER_LINUX_URL`
 
-`VITE_ADSENSE_CLIENT` should look like `ca-pub-...`. `VITE_ADSENSE_DOWNLOAD_SLOT`
-is a separate numeric `data-ad-slot` value from the display ad unit code.
+`VITE_ADSENSE_CLIENT` should look like `ca-pub-...`. The site-level AdSense
+script is installed in `index.html` for verification. Fixed display ad units are
+intentionally not rendered during site review.
 
 The site also publishes `ads.txt` at the domain root:
 
@@ -45,13 +44,14 @@ The site also publishes `ads.txt` at the domain root:
 google.com, pub-1998367148417325, DIRECT, f08c47fec0942fa0
 ```
 
-If the AdSense account changes, update `public/ads.txt` and run `pnpm build` so
-both `dist/ads.txt` and the legacy root `ads.txt` are refreshed.
+If the AdSense account changes, update `public/ads.txt`, `index.html`, and run
+`pnpm build` so both `dist/ads.txt` and the legacy root `ads.txt` are refreshed.
 
 ## Live Usage Count
 
 The launcher sends an anonymous heartbeat to `/api/usage/ping` by default.
-Static GitHub Pages cannot receive that POST, so the included
+Static GitHub Pages cannot receive that POST, so leave
+`VITE_GAIA_USAGE_COUNT_URL` unset for the GitHub Pages deployment. The included
 `functions/api/usage/[[path]].ts` endpoint is for Cloudflare Pages or another
 host with function support. Bind a KV namespace named `GAIA_USAGE_KV`, then point
 `VITE_GAIA_USAGE_COUNT_URL` at `/api/usage` and launcher `GAIA_USAGE_PING_URL`
@@ -64,6 +64,6 @@ If AdSense only gives you this code, it is the site-level or Auto Ads script:
 ```
 
 That script is installed in `index.html` for site verification and Auto Ads, but
-it does not fill a specific fixed banner. The fixed download-page banner needs a
-display ad unit with an `<ins class="adsbygoogle" ... data-ad-slot="...">`
-snippet.
+it does not fill a specific fixed banner. After approval, add fixed display units
+deliberately on content-led pages, not on empty, login, error, or download-only
+screens.

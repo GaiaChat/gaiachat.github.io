@@ -12,9 +12,18 @@ await mkdir(rootAssets, { recursive: true });
 await cp(distAssets, rootAssets, { recursive: true });
 
 await copyFile(resolve(root, 'index.html'), resolve(dist, 'index.html'));
-await copyFile(resolve(root, 'public/ads.txt'), resolve(root, 'ads.txt'));
-await copyFile(resolve(root, 'public/favicon.svg'), resolve(root, 'favicon.svg'));
-await copyFile(resolve(root, 'public/.nojekyll'), resolve(root, '.nojekyll'));
-await copyFile(resolve(root, 'public/ads.txt'), resolve(dist, 'ads.txt'));
-await copyFile(resolve(root, 'public/favicon.svg'), resolve(dist, 'favicon.svg'));
-await copyFile(resolve(root, 'public/.nojekyll'), resolve(dist, '.nojekyll'));
+
+const publicFiles = [
+  'ads.txt',
+  'favicon.svg',
+  '.nojekyll',
+  'robots.txt',
+  'sitemap.xml',
+  'privacy.html',
+  'terms.html',
+];
+
+for (const file of publicFiles) {
+  await copyFile(resolve(root, 'public', file), resolve(root, file));
+  await copyFile(resolve(root, 'public', file), resolve(dist, file));
+}

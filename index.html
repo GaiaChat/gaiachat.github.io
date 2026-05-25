@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Download Gaia Launcher and Current Server for local-first chat, voice, and server hosting."
+      content="Gaia Launcher and Current Server help small communities run inspectable, self-hosted chat and voice infrastructure with public releases and open source code."
     />
+    <meta name="robots" content="index, follow" />
     <meta name="google-adsense-account" content="ca-pub-1998367148417325" />
+    <link rel="canonical" href="https://gaiachat.github.io/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script
       id="gaia-adsense-script"
@@ -16,9 +18,170 @@
       crossorigin="anonymous"
     ></script>
     <title>Gaia Launcher</title>
+    <noscript><link rel="stylesheet" href="/assets/gaiachat-app.css" /></noscript>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="site-shell" data-static-fallback>
+        <header class="site-nav">
+          <a class="brand-lockup" href="#top" aria-label="Gaia Launcher home">
+            <span class="brand-mark">
+              <img class="tinted-logo" src="/favicon.svg" alt="" />
+            </span>
+            <span>
+              <strong>Gaia Launcher</strong>
+              <small>for Current Server</small>
+            </span>
+          </a>
+          <nav aria-label="Primary navigation">
+            <a href="#about">About</a>
+            <a href="#downloads">Downloads</a>
+            <a href="#privacy">Privacy</a>
+            <a href="https://github.com/GaiaChat/gaiachat.github.io">Source</a>
+          </nav>
+        </header>
+
+        <main id="top">
+          <section class="hero-section" aria-labelledby="hero-title">
+            <div class="hero-veil"></div>
+            <div class="hero-content">
+              <h1 id="hero-title">Gaia Launcher</h1>
+              <p>
+                Download the desktop launcher and host Current Server for local-first chat, voice,
+                and communities that do not need to live inside somebody else's platform.
+              </p>
+              <div class="hero-actions">
+                <a class="primary-action" href="#downloads"><span>Download</span></a>
+                <a class="secondary-action" href="#about"><span>Learn More</span></a>
+              </div>
+            </div>
+          </section>
+
+          <section class="about-section" id="about" aria-labelledby="about-title">
+            <div class="section-heading">
+              <div>
+                <h2 id="about-title">Independent Chat Infrastructure</h2>
+                <p>
+                  Gaia Launcher and Current Server are built for small communities that want a clear
+                  desktop entry point and a server they can inspect, host, and move.
+                </p>
+              </div>
+            </div>
+            <div class="editorial-grid">
+              <article class="editorial-lede">
+                <h3>Own the place where your group talks.</h3>
+                <p>
+                  Gaia Launcher keeps the everyday flow simple: choose a server, sign in, join
+                  channels, use voice, and stay current with launcher and server releases.
+                </p>
+                <p>
+                  Current Server handles roles, channels, moderation, invites, messages, and
+                  voice-room state. The project is open source so server owners can review the code
+                  and choose the hosting setup that fits their group.
+                </p>
+              </article>
+              <div class="editorial-list">
+                <article class="editorial-card">
+                  <h3>What runs on your machine</h3>
+                  <p>
+                    Gaia Launcher is the desktop shell. Current Server is the hostable service that
+                    stores community configuration and message surfaces for the servers you run.
+                  </p>
+                </article>
+                <article class="editorial-card">
+                  <h3>How people connect</h3>
+                  <p>
+                    A server owner publishes a Current Server, then shares its address with members.
+                    Gaia keeps the server list, account handoff, and update path in one place.
+                  </p>
+                </article>
+                <article class="editorial-card">
+                  <h3>Why the public site is separate</h3>
+                  <p>
+                    This website is only for public product information, releases, policy pages, and
+                    source links. Private chat content stays inside the launcher and the server.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="download-section" id="downloads" aria-labelledby="downloads-title">
+            <div class="section-heading">
+              <div>
+                <h2 id="downloads-title">Download Builds</h2>
+                <p>
+                  Downloads point to public GitHub releases so the release path is reachable and
+                  auditable.
+                </p>
+              </div>
+            </div>
+            <div class="download-grid">
+              <article class="download-card">
+                <div class="download-card-head">
+                  <h3>Gaia Launcher</h3>
+                  <p>Desktop entry point for joining hosted and self-hosted Current servers.</p>
+                </div>
+                <div class="download-links">
+                  <a class="download-link" href="https://github.com/GaiaChat/Gaia-Launcher/releases/latest">
+                    <span><strong>Latest release</strong><small>All available builds</small></span>
+                  </a>
+                  <a
+                    class="download-link"
+                    href="https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.3.0-beta.4/GaiaLauncher-0.3.0-beta.4-x86_64.AppImage"
+                  >
+                    <span><strong>Linux AppImage</strong><small>v0.3.0 beta 4</small></span>
+                  </a>
+                </div>
+              </article>
+              <article class="download-card">
+                <div class="download-card-head">
+                  <h3>Current Server</h3>
+                  <p>Run a personal or community server with chat, voice, and moderation.</p>
+                </div>
+                <div class="download-links">
+                  <a class="download-link" href="https://github.com/GaiaChat/current/releases/latest">
+                    <span><strong>Latest release</strong><small>Server packages</small></span>
+                  </a>
+                  <a
+                    class="download-link"
+                    href="https://github.com/GaiaChat/current/releases/download/current-server-v0.3.5/current-server-v0.3.5.tar.gz"
+                  >
+                    <span><strong>Server tar.gz</strong><small>v0.3.5</small></span>
+                  </a>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="policy-section" id="privacy" aria-labelledby="privacy-title">
+            <div>
+              <h2 id="privacy-title">Privacy And Site Notes</h2>
+              <p>
+                The public website is a static product and release page. It does not host private
+                chat content, ask for account credentials, or receive Current Server messages.
+              </p>
+              <p>
+                Downloads and source links leave this site for GitHub. Installed launcher and server
+                behavior depends on the code and hosting configuration chosen by the server owner.
+              </p>
+            </div>
+            <div class="policy-links">
+              <a class="text-link" href="/privacy.html">Privacy Policy</a>
+              <a class="text-link" href="/terms.html">Terms</a>
+              <a class="text-link" href="https://github.com/GaiaChat/gaiachat.github.io">Website Source</a>
+            </div>
+          </section>
+        </main>
+
+        <footer>
+          <a href="#top">Gaia Launcher</a>
+          <a href="/privacy.html">Privacy</a>
+          <a href="/terms.html">Terms</a>
+          <a href="https://github.com/GaiaChat/gaiachat.github.io">Source</a>
+        </footer>
+      </div>
+    </div>
     <script type="module">
       const isViteDev =
         (location.hostname === 'localhost' || location.hostname === '127.0.0.1') &&
