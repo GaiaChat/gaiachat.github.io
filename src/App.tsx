@@ -166,6 +166,15 @@ const guideTopics = [
   },
 ];
 
+const previewChatBubbles = [
+  'preview-chat-bubble received preview-chat-bubble-wide',
+  'preview-chat-bubble sent preview-chat-bubble-medium',
+  'preview-chat-bubble received preview-chat-bubble-short',
+  'preview-chat-bubble sent preview-chat-bubble-wide',
+  'preview-chat-bubble received preview-chat-bubble-medium',
+  'preview-chat-bubble sent preview-chat-bubble-short',
+];
+
 function App() {
   return (
     <div className="site-shell">
@@ -229,13 +238,25 @@ function App() {
                   <span />
                 </aside>
                 <section>
-                  <div>
+                  <div className="preview-chat-header">
                     <strong>Current Home</strong>
                     <small>online</small>
                   </div>
-                  <p />
-                  <p />
-                  <p />
+                  <div className="preview-chat-stream">
+                    <div className="preview-chat-track">
+                      {[0, 1].map((loop) => (
+                        <div className="preview-chat-set" key={loop}>
+                          {previewChatBubbles.map((className, index) => (
+                            <span className={className} key={`${loop}-${index}`} />
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="preview-input-bar">
+                    <span />
+                    <i />
+                  </div>
                 </section>
               </div>
             </div>

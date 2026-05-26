@@ -407,36 +407,145 @@ main {
 
 .preview-body section {
   display: grid;
-  align-content: start;
-  gap: 13px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
   padding: 28px 24px;
 }
 
-.preview-body section div {
+.preview-chat-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 4px;
 }
 
-.preview-body section strong {
+.preview-chat-header strong {
   color: var(--ink);
   font-size: 1rem;
 }
 
-.preview-body section small {
+.preview-chat-header small {
   color: var(--mint);
   font-weight: 800;
 }
 
-.preview-body section p {
-  height: 48px;
-  margin: 0;
+.preview-chat-stream {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(223, 246, 255, 0.1);
   border-radius: 8px;
   background:
-    linear-gradient(90deg, rgba(235, 247, 255, 0.13), rgba(var(--brand-rgb), 0.08)),
+    radial-gradient(circle at 18% 16%, rgba(var(--brand-rgb), 0.13), transparent 38%),
+    rgba(2, 8, 14, 0.16);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 82%, transparent 100%);
+}
+
+.preview-chat-track {
+  position: absolute;
+  inset: 0 0 auto;
+  display: grid;
+  gap: 10px;
+  padding: 14px 12px;
+  animation: preview-chat-rise 9s linear infinite;
+}
+
+.preview-chat-set {
+  display: grid;
+  gap: 10px;
+}
+
+.preview-chat-bubble {
+  position: relative;
+  display: block;
+  min-height: 32px;
+  border-radius: 14px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(235, 247, 255, 0.18), rgba(var(--brand-rgb), 0.1)),
+    rgba(235, 247, 255, 0.07);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.preview-chat-bubble::before {
+  content: "";
+  position: absolute;
+  inset: 11px 16px;
+  border-radius: 999px;
+  background: rgba(235, 247, 255, 0.2);
+}
+
+.preview-chat-bubble.sent {
+  justify-self: end;
+  background:
+    linear-gradient(135deg, rgba(var(--brand-rgb), 0.5), rgba(var(--mint-rgb), 0.2)),
+    rgba(var(--brand-rgb), 0.16);
+}
+
+.preview-chat-bubble.received {
+  justify-self: start;
+}
+
+.preview-chat-bubble-wide {
+  width: 74%;
+}
+
+.preview-chat-bubble-medium {
+  width: 62%;
+}
+
+.preview-chat-bubble-short {
+  width: 46%;
+}
+
+.preview-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  border: 1px solid rgba(223, 246, 255, 0.14);
+  border-radius: 8px;
+  padding: 0 10px 0 14px;
+  background:
+    linear-gradient(90deg, rgba(235, 247, 255, 0.13), rgba(var(--brand-rgb), 0.07)),
     rgba(235, 247, 255, 0.05);
+}
+
+.preview-input-bar span {
+  flex: 1 1 auto;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(235, 247, 255, 0.22);
+}
+
+.preview-input-bar i {
+  flex: 0 0 auto;
+  width: 22px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    linear-gradient(135deg, rgba(var(--mint-rgb), 0.8), rgba(var(--brand-rgb), 0.68));
+  box-shadow: 0 0 20px rgba(var(--mint-rgb), 0.2);
+}
+
+@keyframes preview-chat-rise {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(calc(-50% - 5px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-chat-track {
+    animation: none;
+    transform: translateY(-24px);
+  }
 }
 
 .about-section,
