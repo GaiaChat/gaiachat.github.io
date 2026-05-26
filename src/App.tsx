@@ -244,12 +244,8 @@ function App() {
                   </div>
                   <div className="preview-chat-stream">
                     <div className="preview-chat-track">
-                      {[0, 1].map((loop) => (
-                        <div className="preview-chat-set" key={loop}>
-                          {previewChatBubbles.map((className, index) => (
-                            <span className={className} key={`${loop}-${index}`} />
-                          ))}
-                        </div>
+                      {previewChatBubbles.map((className, index) => (
+                        <span className={className} key={index} />
                       ))}
                     </div>
                   </div>
