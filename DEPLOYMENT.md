@@ -34,6 +34,18 @@ Optional repository variables for the workflow:
 - `VITE_CURRENT_SOURCE_URL`
 - `VITE_CURRENT_SERVER_LINUX_URL`
 
+## Spotify Redirect
+
+Register this exact redirect URI in the Spotify developer app used by Gaia
+Launcher:
+
+```text
+https://gaiachat.github.io/spotify/callback/
+```
+
+The page is a static HTTPS handoff that forwards Spotify's authorization code to
+Gaia Launcher's local `127.0.0.1` callback server.
+
 `VITE_ADSENSE_CLIENT` should look like `ca-pub-...`. The site-level AdSense
 script is installed in `index.html` for verification. Fixed display ad units are
 intentionally not rendered during site review.
