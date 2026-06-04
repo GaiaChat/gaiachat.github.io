@@ -41,6 +41,24 @@ const currentReleaseUrl =
   import.meta.env.VITE_CURRENT_RELEASE_URL || 'https://github.com/GaiaChat/current/releases/latest';
 const currentSourceUrl = import.meta.env.VITE_CURRENT_SOURCE_URL || 'https://github.com/GaiaChat/current';
 const usageCountUrl = import.meta.env.VITE_GAIA_USAGE_COUNT_URL?.trim() || '';
+const gaiaAppImageUrl =
+  import.meta.env.VITE_GAIA_APPIMAGE_URL ||
+  'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.4.0-beta.1/GaiaLauncher-0.4.0-beta.1-x86_64.AppImage';
+const gaiaDebUrl =
+  import.meta.env.VITE_GAIA_DEB_URL ||
+  'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.4.0-beta.1/GaiaLauncher-0.4.0-beta.1-amd64.deb';
+const gaiaRpmUrl =
+  import.meta.env.VITE_GAIA_RPM_URL ||
+  'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.4.0-beta.1/GaiaLauncher-0.4.0-beta.1-x86_64.rpm';
+const gaiaTarballUrl =
+  import.meta.env.VITE_GAIA_TARBALL_URL ||
+  'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.4.0-beta.1/GaiaLauncher-0.4.0-beta.1-x64.tar.gz';
+const currentServerArchiveUrl =
+  import.meta.env.VITE_CURRENT_SERVER_ARCHIVE_URL ||
+  'https://github.com/GaiaChat/current/releases/download/current-server-v0.4.0/current-server-v0.4.0.tar.gz';
+const currentServerManifestUrl =
+  import.meta.env.VITE_CURRENT_SERVER_MANIFEST_URL ||
+  'https://github.com/GaiaChat/current/releases/latest/download/current-server-latest.json';
 
 const downloadGroups: DownloadGroup[] = [
   {
@@ -55,11 +73,27 @@ const downloadGroups: DownloadGroup[] = [
       },
       {
         label: 'Linux AppImage',
-        href:
-          import.meta.env.VITE_GAIA_LINUX_URL ||
-          'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.3.0-beta.4/GaiaLauncher-0.3.0-beta.4-x86_64.AppImage',
+        href: gaiaAppImageUrl,
         icon: HardDriveDownload,
-        note: 'v0.3.0 beta 4',
+        note: 'v0.4.0 beta 1',
+      },
+      {
+        label: 'Linux .deb',
+        href: gaiaDebUrl,
+        icon: TerminalSquare,
+        note: 'v0.4.0 beta 1',
+      },
+      {
+        label: 'Linux .rpm',
+        href: gaiaRpmUrl,
+        icon: TerminalSquare,
+        note: 'v0.4.0 beta 1',
+      },
+      {
+        label: 'Linux tar.gz',
+        href: gaiaTarballUrl,
+        icon: HardDriveDownload,
+        note: 'v0.4.0 beta 1',
       },
       {
         label: 'Release notes',
@@ -81,11 +115,15 @@ const downloadGroups: DownloadGroup[] = [
       },
       {
         label: 'Server tar.gz',
-        href:
-          import.meta.env.VITE_CURRENT_SERVER_LINUX_URL ||
-          'https://github.com/GaiaChat/current/releases/download/current-server-v0.3.5/current-server-v0.3.5.tar.gz',
+        href: currentServerArchiveUrl,
         icon: TerminalSquare,
-        note: 'v0.3.5',
+        note: 'v0.4.0',
+      },
+      {
+        label: 'Update manifest',
+        href: currentServerManifestUrl,
+        icon: HardDriveDownload,
+        note: 'current-server-latest.json',
       },
       {
         label: 'Source',
