@@ -26,6 +26,7 @@ type DownloadLink = {
   href: string;
   icon: LucideIcon;
   note: string;
+  platform?: PlatformId;
 };
 
 type DownloadGroup = {
@@ -34,31 +35,64 @@ type DownloadGroup = {
   links: DownloadLink[];
 };
 
+type PlatformId = 'windows' | 'macos' | 'linux';
+
+type PlatformOption = {
+  id: PlatformId;
+  label: string;
+};
+
 const sourceUrl = import.meta.env.VITE_SOURCE_URL || 'https://github.com/GaiaChat/gaiachat.github.io';
+const gaiaReleaseTag = 'v0.5.0-beta.1';
+const gaiaReleaseVersion = '0.5.0-beta.1';
+const gaiaReleaseLabel = 'v0.5.0 beta 1';
+const currentServerTag = 'current-server-v0.5.0';
+const currentServerVersion = '0.5.0';
 const gaiaReleaseUrl =
-  import.meta.env.VITE_GAIA_RELEASE_URL || 'https://github.com/GaiaChat/Gaia-Launcher/releases/latest';
+  import.meta.env.VITE_GAIA_RELEASE_URL ||
+  `https://github.com/GaiaChat/Gaia-Launcher/releases/tag/${gaiaReleaseTag}`;
 const currentReleaseUrl =
-  import.meta.env.VITE_CURRENT_RELEASE_URL || 'https://github.com/GaiaChat/current/releases/latest';
+  import.meta.env.VITE_CURRENT_RELEASE_URL ||
+  `https://github.com/GaiaChat/current/releases/tag/${currentServerTag}`;
 const currentSourceUrl = import.meta.env.VITE_CURRENT_SOURCE_URL || 'https://github.com/GaiaChat/current';
 const usageCountUrl = import.meta.env.VITE_GAIA_USAGE_COUNT_URL?.trim() || '';
-const gaiaAppImageUrl =
-  import.meta.env.VITE_GAIA_APPIMAGE_URL ||
-  'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.4.0-beta.1/GaiaLauncher-0.4.0-beta.1-x86_64.AppImage';
-const gaiaDebUrl =
-  import.meta.env.VITE_GAIA_DEB_URL ||
-  'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.4.0-beta.1/GaiaLauncher-0.4.0-beta.1-amd64.deb';
-const gaiaRpmUrl =
-  import.meta.env.VITE_GAIA_RPM_URL ||
-  'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.4.0-beta.1/GaiaLauncher-0.4.0-beta.1-x86_64.rpm';
-const gaiaTarballUrl =
-  import.meta.env.VITE_GAIA_TARBALL_URL ||
-  'https://github.com/GaiaChat/Gaia-Launcher/releases/download/v0.4.0-beta.1/GaiaLauncher-0.4.0-beta.1-x64.tar.gz';
-const currentServerArchiveUrl =
-  import.meta.env.VITE_CURRENT_SERVER_ARCHIVE_URL ||
-  'https://github.com/GaiaChat/current/releases/download/current-server-v0.4.0/current-server-v0.4.0.tar.gz';
+const gaiaDownloadBaseUrl =
+  import.meta.env.VITE_GAIA_DOWNLOAD_BASE_URL ||
+  `https://github.com/GaiaChat/Gaia-Launcher/releases/download/${gaiaReleaseTag}`;
+const currentServerDownloadBaseUrl =
+  import.meta.env.VITE_CURRENT_SERVER_DOWNLOAD_BASE_URL ||
+  `https://github.com/GaiaChat/current/releases/download/${currentServerTag}`;
 const currentServerManifestUrl =
   import.meta.env.VITE_CURRENT_SERVER_MANIFEST_URL ||
   'https://github.com/GaiaChat/current/releases/latest/download/current-server-latest.json';
+
+function gaiaAssetUrl(assetName: string) {
+  return `${gaiaDownloadBaseUrl.replace(/\/+$/, '')}/${assetName}`;
+}
+
+function currentServerAssetUrl(assetName: string) {
+  return `${currentServerDownloadBaseUrl.replace(/\/+$/, '')}/${assetName}`;
+}
+
+function detectPreferredPlatform(): PlatformId {
+  if (typeof navigator === 'undefined') {
+    return 'linux';
+  }
+  const platformText = `${navigator.platform || ''} ${navigator.userAgent || ''}`.toLowerCase();
+  if (platformText.includes('mac')) {
+    return 'macos';
+  }
+  if (platformText.includes('win')) {
+    return 'windows';
+  }
+  return 'linux';
+}
+
+const platformOptions: PlatformOption[] = [
+  { id: 'windows', label: 'Windows' },
+  { id: 'macos', label: 'Mac' },
+  { id: 'linux', label: 'Linux' },
+];
 
 const downloadGroups: DownloadGroup[] = [
   {
@@ -72,28 +106,81 @@ const downloadGroups: DownloadGroup[] = [
         note: 'All available builds',
       },
       {
-        label: 'Linux AppImage',
-        href: gaiaAppImageUrl,
+        label: 'Windows installer',
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-win-x64.exe`),
         icon: HardDriveDownload,
-        note: 'v0.4.0 beta 1',
+        note: gaiaReleaseLabel,
+        platform: 'windows',
+      },
+      {
+        label: 'Windows zip',
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-win-x64.zip`),
+        icon: HardDriveDownload,
+        note: gaiaReleaseLabel,
+        platform: 'windows',
+      },
+      {
+        label: 'Apple Silicon .dmg',
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-mac-arm64.dmg`),
+        icon: HardDriveDownload,
+        note: gaiaReleaseLabel,
+        platform: 'macos',
+      },
+      {
+        label: 'Intel Mac .dmg',
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-mac-x64.dmg`),
+        icon: HardDriveDownload,
+        note: gaiaReleaseLabel,
+        platform: 'macos',
+      },
+      {
+        label: 'Apple Silicon zip',
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-mac-arm64.zip`),
+        icon: HardDriveDownload,
+        note: gaiaReleaseLabel,
+        platform: 'macos',
+      },
+      {
+        label: 'Intel Mac zip',
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-mac-x64.zip`),
+        icon: HardDriveDownload,
+        note: gaiaReleaseLabel,
+        platform: 'macos',
+      },
+      {
+        label: 'Linux AppImage',
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-x86_64.AppImage`),
+        icon: HardDriveDownload,
+        note: gaiaReleaseLabel,
+        platform: 'linux',
       },
       {
         label: 'Linux .deb',
-        href: gaiaDebUrl,
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-amd64.deb`),
         icon: TerminalSquare,
-        note: 'v0.4.0 beta 1',
+        note: gaiaReleaseLabel,
+        platform: 'linux',
       },
       {
         label: 'Linux .rpm',
-        href: gaiaRpmUrl,
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-x86_64.rpm`),
         icon: TerminalSquare,
-        note: 'v0.4.0 beta 1',
+        note: gaiaReleaseLabel,
+        platform: 'linux',
+      },
+      {
+        label: 'Linux pacman',
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-x64.pacman`),
+        icon: TerminalSquare,
+        note: gaiaReleaseLabel,
+        platform: 'linux',
       },
       {
         label: 'Linux tar.gz',
-        href: gaiaTarballUrl,
+        href: gaiaAssetUrl(`GaiaLauncher-${gaiaReleaseVersion}-x64.tar.gz`),
         icon: HardDriveDownload,
-        note: 'v0.4.0 beta 1',
+        note: gaiaReleaseLabel,
+        platform: 'linux',
       },
       {
         label: 'Release notes',
@@ -114,10 +201,25 @@ const downloadGroups: DownloadGroup[] = [
         note: 'Server packages',
       },
       {
-        label: 'Server tar.gz',
-        href: currentServerArchiveUrl,
+        label: 'Windows server tar.gz',
+        href: currentServerAssetUrl(`current-server-v${currentServerVersion}-windows.tar.gz`),
         icon: TerminalSquare,
-        note: 'v0.4.0',
+        note: `v${currentServerVersion}`,
+        platform: 'windows',
+      },
+      {
+        label: 'macOS server tar.gz',
+        href: currentServerAssetUrl(`current-server-v${currentServerVersion}-macos.tar.gz`),
+        icon: TerminalSquare,
+        note: `v${currentServerVersion}`,
+        platform: 'macos',
+      },
+      {
+        label: 'Linux server tar.gz',
+        href: currentServerAssetUrl(`current-server-v${currentServerVersion}-linux.tar.gz`),
+        icon: TerminalSquare,
+        note: `v${currentServerVersion}`,
+        platform: 'linux',
       },
       {
         label: 'Update manifest',
@@ -214,6 +316,12 @@ const previewChatBubbles = [
 ];
 
 function App() {
+  const [selectedPlatform, setSelectedPlatform] = useState<PlatformId>(() => detectPreferredPlatform());
+  const filteredDownloadGroups = downloadGroups.map((group) => ({
+    ...group,
+    links: group.links.filter((link) => !link.platform || link.platform === selectedPlatform),
+  }));
+
   return (
     <div className="site-shell">
       <header className="site-nav">
@@ -348,8 +456,21 @@ function App() {
               </p>
             </div>
           </div>
+          <div className="platform-filter" role="group" aria-label="Download platform">
+            {platformOptions.map((platform) => (
+              <button
+                aria-pressed={selectedPlatform === platform.id}
+                className={selectedPlatform === platform.id ? 'is-active' : undefined}
+                key={platform.id}
+                onClick={() => setSelectedPlatform(platform.id)}
+                type="button"
+              >
+                {platform.label}
+              </button>
+            ))}
+          </div>
           <div className="download-grid">
-            {downloadGroups.map((group) => (
+            {filteredDownloadGroups.map((group) => (
               <article className="download-card" key={group.title}>
                 <div className="download-card-head">
                   <h3>{group.title}</h3>

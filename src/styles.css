@@ -746,6 +746,36 @@ main {
   gap: 16px;
 }
 
+.platform-filter {
+  display: inline-grid;
+  grid-template-columns: repeat(3, minmax(94px, 1fr));
+  gap: 4px;
+  margin: -8px 0 22px;
+  padding: 4px;
+  border: 1px solid rgba(223, 246, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(235, 247, 255, 0.06);
+}
+
+.platform-filter button {
+  min-height: 40px;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 12px;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.platform-filter button:hover,
+.platform-filter button.is-active {
+  background:
+    linear-gradient(135deg, rgba(var(--brand-rgb), 0.34), rgba(var(--mint-rgb), 0.14)),
+    rgba(235, 247, 255, 0.08);
+  color: var(--ink);
+}
+
 .editorial-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
@@ -1293,5 +1323,10 @@ footer a:hover {
   .source-section h2,
   .policy-section h2 {
     font-size: 1.7rem;
+  }
+
+  .platform-filter {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
