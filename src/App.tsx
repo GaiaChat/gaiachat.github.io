@@ -43,9 +43,9 @@ type PlatformOption = {
 };
 
 const sourceUrl = import.meta.env.VITE_SOURCE_URL || 'https://github.com/GaiaChat/gaiachat.github.io';
-const gaiaReleaseTag = 'v0.5.0-beta.1';
-const gaiaReleaseVersion = '0.5.0-beta.1';
-const gaiaReleaseLabel = 'v0.5.0 beta 1';
+const gaiaReleaseTag = import.meta.env.VITE_GAIA_RELEASE_TAG || 'v0.5.0-beta.5';
+const gaiaReleaseVersion = import.meta.env.VITE_GAIA_RELEASE_VERSION || '0.5.0-beta.5';
+const gaiaReleaseLabel = import.meta.env.VITE_GAIA_RELEASE_LABEL || 'v0.5.0 beta 5';
 const currentServerTag = 'current-server-v0.5.0';
 const currentServerVersion = '0.5.0';
 const gaiaReleaseUrl =
